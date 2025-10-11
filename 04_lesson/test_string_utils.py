@@ -82,14 +82,31 @@ def test_contains_negative(string, symbol):
 ])
 def test_delete_symbol_positive(string, symbol, expected):
     assert string_utils.delete_symbol(string, symbol) == expected
-
-
+    
 @pytest.mark.negative
 @pytest.mark.parametrize("string, symbol, expected", [
     ("SkyPro", "x", "SkyPro"),  # символа нет
     ("", "a", ""),              # пустая строка
     ("test", "", "test"),       # пустой символ
 ])
+
 def test_delete_symbol_negative(string, symbol, expected):
     assert string_utils.delete_symbol(string, symbol) == expected
+    
+def test_trim_all_spaces_string(self):
+    self.assertEqual(StringUtils().trim("   "), "")
+
+def test_contains_true(self):
+    self.assertTrue(StringUtils().contains("SkyPro", "S"))
+
+def test_contains_false(self):
+    self.assertFalse(StringUtils().contains("SkyPro", "u"))
+
+def test_delete_symbol_substring(self):
+    self.assertEqual(StringUtils().delete_symbol("SkyPro", "Pro"), "Sky")
+
+def test_trim_none_raises_attribute_error(self):
+    s = StringUtils()
+    with self.assertRaises(AttributeError):
+        s.trim(None)
 
