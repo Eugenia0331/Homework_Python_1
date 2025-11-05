@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-
 def test_form_validation():
     driver = webdriver.Edge()
     driver.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
@@ -37,3 +36,4 @@ def test_form_validation():
     assert "danger" in zip_element.get_attribute("class"), "Zip code должен быть красным"
 
     driver.quit()
+
