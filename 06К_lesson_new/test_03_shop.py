@@ -1,73 +1,49 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
 import time
 
-class SauceDemoTest:
-    def __init__(self):
-        self.driver = webdriver.Firefox()  # Используется Firefox WebDriver
-        self.driver.implicitly_wait(10)  # Устанавливается неявное ожидание
+def test_sauce_demo_checkout():
+    # Запуск Firefox
+    driver = webdriver.Firefox()
+    
+    try:
+        # Открываем сайт
+        driver.get("https://www.saucedemo.com/")
+        
+        # Авторизация
+        driver.find_element(By.ID, "user-name").send_keys("standard_user")
+        driver.find_element(By.ID, "password").send_keys("secret_sauce")
+        driver.find_element(By.ID, "login-button").click()
 
-    def open_site(self):
-        try:
-            self.driver.get("https://www.saucedemo.com/")
-        except Exception as e:
-            print(f"Ошибка при открытии сайта: {e}")
+        # Добавляем товары в корзину
+        driver.find_element(By.XPATH, "//button[@id='add-to-cart-sauce-labs-backpack']").click()
+        driver.find_element(By.XPATH, "//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']").click()
+        driver.find_element(By.XPATH, "//button[@id='add-to-cart-sauce-labs-onesie']").click()
 
-    def login(self, username, password):
-        try:
-            self.driver.find_element(By.ID, "user-name").send_keys(username)
-            self.driver.find_element(By.ID, "password").send_keys(password)
-            self.driver.find_element(By.XPATH, "//input[@type='submit']").click()
-        except Exception as e:
-            print(f"Ошибка при авторизации: {e}")
+        # Переходим в корзину
+        driver.find_element(By.XPATH, "//a[@class='shopping_cart_link']").click()
 
-    def add_items_to_cart(self):
-        items = [
-            "Sauce Labs Backpack",
-            "Sauce Labs Bolt T-Shirt",
-            "Sauce Labs Onesie"
-        ]
-        try:
-            for item in items:
-                item_selector = f"//div[text()='{item}']//ancestor::div[@class='inventory_item']//button"
-                self.driver.find_element(By.XPATH, item_selector).click()
-        except Exception as e:
-            print(f"Ошибка при добавлении товаров в корзину: {e}")
+        # Нажимаем Checkout
+        driver.find_element(By.XPATH, "//button[@id='checkout']").click()
 
-    def proceed_to_checkout(self):
-        try:
-            self.driver.find_element(By.CSS_SELECTOR, ".shopping_cart_link").click()
-            self.driver.find_element(By.XPATH, "//button[text()='Checkout']").click()
-        except Exception as e:
-            print(f"Ошибка при переходе в корзину: {e}")
+        # Заполняем форму
+        driver.find_element(By.ID, "first-name").send_keys("John")
+        driver.find_element(By.ID, "last-name").send_keys("Doe")
+        driver.find_element(By.ID, "postal-code").send_keys("12345")
+        driver.find_element(By.XPATH, "//input[@value='Continue']").click()
 
-    def fill_checkout_form(self, first_name, last_name, postal_code):
-        try:
-            self.driver.find_element(By.ID, "first-name").send_keys(first_name)
-            self.driver.find_element(By.ID, "last-name").send_keys(last_name)
-            self.driver.find_element(By.ID, "postal-code").send_keys(postal_code)
-            self.driver.find_element(By.XPATH, "//input[@type='submit']").click()
-        except Exception as e:
-            print(f"Ошибка при заполнении формы: {e}")
+        # Ждем загрузки страницы итоговой стоимости
+        time.sleep(2)
 
-    def verify_total(self):
-        try:
-            wait = WebDriverWait(self.driver, 10)
-            total_text = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "summary_total_label"))).text
-            assert total_text == "Total: $58.29", f"Ожидалось $58.29, получено {total_text}"
-        except Exception as e:
-            print(f"Ошибка при проверке итоговой суммы: {e}")
+        # Читаем итоговую стоимость
+        total_price = driver.find_element(By.CLASS_NAME, "summary_total_label").text
+        print(f"Total Price: {total_price}")
 
-    def close_browser(self):
-        self.driver.quit()
+        # Проверяем, что итоговая стоимость равна $58.29
+        assert total_price == "Total: $58.29", f"Expected $58.29, but got {total_price}"
 
-    def run_test(self):
-        self.open_site()
-        self.login("standard_user", "secret_sauce")
-        self.add_items_to_cart()
-        self.proceed_to_checkout()
-        self.fill_checkout_form("Иван", "Петров", "12345")
-        self.verify_total()
-        self.close_browser()
+    finally:
+        # Закрываем браузер
+        driver.quit()
+
