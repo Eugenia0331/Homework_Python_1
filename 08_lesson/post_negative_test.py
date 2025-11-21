@@ -19,4 +19,5 @@ def test_post_create_project_negative():
     response = requests.post(f"{BASE_URL}/projects", json=payload, headers=headers)
 
     assert response.status_code in (400, 422)  # зависит от API
+
     assert "error" in response.text.lower()
