@@ -9,7 +9,7 @@ def test_create_project():
     body = {
         "title": "Новый проект"
     }
-    r = requests.post("https://ru.yougile.com/api-v2/projects", headers=headers, json=body)
+    r = requests.post("base_url", headers=headers, json=body)
     assert r.status_code == 201
 
 import requests
@@ -19,7 +19,7 @@ def test_create_project_negative():
         "title": "Новый проект"
     }
     # Отправляем запрос без headers (без авторизации)
-    r = requests.post("https://ru.yougile.com/api-v2/projects", headers={}, json=body)
+    r = requests.post("base_url", headers={}, json=body)
 
     # Выводим статус и ответ для отладки
     print("Status code:", r.status_code)
@@ -75,4 +75,5 @@ def test_get_project_negative():
     id = "key"
     r2 = requests.get(f"{base_url}/projects/{id}", headers=headers)
     assert r2.status_code == 404
+
 
