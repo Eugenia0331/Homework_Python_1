@@ -1,7 +1,7 @@
 import requests
 
-key = "SMG4Z6I0Nj8AsnHh08QJub9IwyARMloj07SAOoK6RiQtqJACdz7g6MhLL4pCyUlg"
-base_url = "https://ru.yougile.com/api-v2"
+key = "API_TOKEN
+base_url = "BASE_URL"
 headers = {"Authorization": f"Bearer {key}"}
 
 
@@ -74,4 +74,5 @@ def test_get_project():
 def test_get_project_negative():
     id = "SMG4Z6I0Nj8AsnHh08QJub9IwyARMloj07SAOoK6RiQtqJACdz7g6MhLL4pCyUlg"
     r2 = requests.get(f"{base_url}/projects/{id}", headers=headers)
+
     assert r2.status_code == 404
