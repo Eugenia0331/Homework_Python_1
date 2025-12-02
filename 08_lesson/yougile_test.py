@@ -72,6 +72,7 @@ def test_get_project():
 
 
 def test_get_project_negative():
-    id = "SMG4Z6I0Nj8AsnHh08QJub9IwyARMloj07SAOoK6RiQtqJACdz7g6MhLL4pCyUlg"
+    id = "key"
     r2 = requests.get(f"{base_url}/projects/{id}", headers=headers)
     assert r2.status_code == 404
+
