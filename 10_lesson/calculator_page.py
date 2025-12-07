@@ -74,3 +74,4 @@ class CalculatorPage:
 
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.result_display))
         return self.driver.find_element(*self.result_display).text
+
