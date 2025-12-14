@@ -17,14 +17,14 @@ def driver():
 
 
 @allure.title("Проверка сложения с задержкой на медленном калькуляторе")
-@allure.description("Тест вводит задержку, выполняет 7+8, ожидает результат 15 через 45 секунд")
+@allure.description("Тест вводит задержку, выполняет 7+8, ожидает результат 15 через 50 секунд")
 @allure.feature("Slow Calculator")
 @allure.severity(allure.severity_level.CRITICAL)
 def test_calculator_delay_addition(driver):
     page = CalculatorPage(driver)
 
     with allure.step("Установка задержки 50 секунд"):
-        page.set_delay("45")
+        page.set_delay("50")
 
     with allure.step("Ввод выражения 7 + 8 ="):
         page.click_button("7")
@@ -33,8 +33,9 @@ def test_calculator_delay_addition(driver):
         page.click_button("=")
 
     with allure.step("Ожидание результата 15"):
-        page.wait_for_result("15", timeout=45)
+        page.wait_for_result("15", timeout=50)
 
     with allure.step("Проверка результата на экране"):
         assert page.get_result_text() == "15"
+
 
