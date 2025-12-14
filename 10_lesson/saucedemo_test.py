@@ -1,10 +1,10 @@
 import pytest
 import allure
-from selenium import webdriver
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
-from pages.cart_page import CartPage
-from pages.checkout_page import CheckoutPage
+from selenium.webdriver.chrome.options import Options
+from login_page import LoginPage
+from main_page import MainPage
+from cart_page import CartPage
+from checkout_page import CheckoutPage
 
 @pytest.fixture
 def driver():
@@ -53,4 +53,5 @@ def test_saucedemo_flow(driver):
 
     with allure.step("Проверить итоговую сумму"):
         assert total_price == "Total: $58.29", f"Ожидалось 'Total: $58.29', получено '{total_price}'"
+
 
