@@ -6,15 +6,15 @@ from pages.main_page import MainPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
-
 @pytest.fixture
 def driver():
-    driver = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument('--incognito')
+    driver = webdriver.Chrome(options=chrome_options)
     driver.implicitly_wait(3)
     driver.maximize_window()
     yield driver
     driver.quit()
-
 
 @allure.title("Полный тест оформления заказа на SauceDemo")
 @allure.description("Авторизация, добавление товаров в корзину, оформление заказа и проверка итоговой суммы.")
@@ -53,3 +53,4 @@ def test_saucedemo_flow(driver):
 
     with allure.step("Проверить итоговую сумму"):
         assert total_price == "Total: $58.29", f"Ожидалось 'Total: $58.29', получено '{total_price}'"
+
