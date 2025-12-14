@@ -23,7 +23,7 @@ def driver():
 def test_calculator_delay_addition(driver):
     page = CalculatorPage(driver)
 
-    with allure.step("Установка задержки 45 секунд"):
+    with allure.step("Установка задержки 50 секунд"):
         page.set_delay("45")
 
     with allure.step("Ввод выражения 7 + 8 ="):
@@ -37,3 +37,4 @@ def test_calculator_delay_addition(driver):
 
     with allure.step("Проверка результата на экране"):
         assert page.get_result_text() == "15"
+
