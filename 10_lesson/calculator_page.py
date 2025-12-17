@@ -18,8 +18,8 @@ class CalculatorPage:
         """
         self.driver = driver
         self.delay_input = (By.CSS_SELECTOR, '#delay')
-        self.result_display = (By.CSS_SELECTOR, '#result')
-
+        self.result_display = (By.CSS_SELECTOR, '.screen')
+        
     def _button_by_label(self, label):
         """
         Вспомогательный метод для получения локатора кнопки по её видимому тексту.
@@ -74,4 +74,5 @@ class CalculatorPage:
 
         WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(self.result_display))
         return self.driver.find_element(*self.result_display).text
+
 
