@@ -1,21 +1,20 @@
-import pytest
-import allure
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from login_page import LoginPage
 from main_page import MainPage
 from cart_page import CartPage
 from checkout_page import CheckoutPage
 
-@pytest.fixture
-def driver():
+@pytest.fixture(name="driver")
+def chrome_driver():
     chrome_options = Options()
     chrome_options.add_argument('--incognito')
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.implicitly_wait(3)
-    driver.maximize_window()
-    yield driver
-    driver.quit()
-
+    driver_instance = webdriver.Chrome(options=chrome_options)
+    driver_instance.implicitly_wait(3)
+    driver_instance.maximize_window()
+    yield driver_instance
+    driver_instance.quit()
+    
 @allure.title("Полный тест оформления заказа на SauceDemo")
 @allure.description("Авторизация, добавление товаров в корзину, оформление заказа и проверка итоговой суммы.")
 @allure.feature("SauceDemo — оформление заказа")
@@ -53,5 +52,6 @@ def test_saucedemo_flow(driver):
 
     with allure.step("Проверить итоговую сумму"):
         assert total_price == "Total: $58.29", f"Ожидалось 'Total: $58.29', получено '{total_price}'"
+
 
 
